@@ -33,10 +33,10 @@ class Sprite {
     c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
     // attack box
-    // if (this.isAttacking) {
-    c.fillStyle = "yellow";
-    c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
-    // }
+    if (this.isAttacking) {
+      c.fillStyle = "yellow";
+      c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
+    }
   }
 
   update() {
@@ -156,6 +156,7 @@ function animate() {
   ) {
     player.isAttacking = false;
     console.log("player attacking");
+    document.querySelector("#enemyHealth").style.width = "20%";
   }
 
   if (
@@ -205,7 +206,6 @@ window.addEventListener("keydown", (event) => {
       enemy.isAttacking = true;
       break;
   }
-  console.log(event.key);
 });
 
 window.addEventListener("keyup", (event) => {
@@ -227,5 +227,4 @@ window.addEventListener("keyup", (event) => {
       keys.ArrowLeft.pressed = false;
       break;
   }
-  console.log(event.key);
 });

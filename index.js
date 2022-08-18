@@ -26,6 +26,7 @@ class Sprite {
     };
     this.color = color;
     this.isAttacking;
+    this.health = 100;
   }
 
   draw() {
@@ -156,7 +157,8 @@ function animate() {
   ) {
     player.isAttacking = false;
     console.log("player attacking");
-    document.querySelector("#enemyHealth").style.width = "20%";
+    enemy.health -= 10;
+    document.querySelector("#enemyHealth").style.width = enemy.health + "%";
   }
 
   if (
@@ -168,6 +170,8 @@ function animate() {
   ) {
     enemy.isAttacking = false;
     console.log("enemy attacking");
+    player.health -= 10;
+    document.querySelector("#playerHealth").style.width = player.health + "%";
   }
 }
 

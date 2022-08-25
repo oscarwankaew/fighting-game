@@ -1,6 +1,6 @@
 /*global c, canvas, gravity */
 class Sprite {
-  constructor({ position, imageSrc, scale = 1, frameMax = 1 }) {
+  constructor({ position, imageSrc, scale = 1, frameMax = 1, offset = { x: 0, y: 0 } }) {
     this.position = position;
     this.height = 150;
     this.width = 50;
@@ -11,6 +11,7 @@ class Sprite {
     this.frameCurrent = 0;
     this.frameElapsed = 0;
     this.frameHold = 6;
+    this.offset = offset;
   }
 
   draw() {
@@ -21,15 +22,13 @@ class Sprite {
       this.image.width / this.frameMax,
       this.image.height,
 
-      this.position.x,
-      this.position.y,
+      this.position.x - this.offset.x,
+      this.position.y - this.offset.y,
       (this.image.width / this.frameMax) * this.scale,
       this.image.height * this.scale
     );
   }
-
-  update() {
-    this.draw();
+  animateFrames() {
     this.frameElapsed++;
     if (this.frameElapsed % this.frameHold === 0) {
       if (this.frameCurrent < this.frameMax - 1) {
@@ -39,11 +38,21 @@ class Sprite {
       }
     }
   }
+  update() {
+    this.draw();
+    this.animateFrames();
+  }
 }
 
-class Fighter {
-  constructor({ position, velocity, color = "red", offset }) {
-    this.position = position;
+class Fighter extends Sprite {
+  constructor({ position, velocity, color = "red", imageSrc, scale = 1, frameMax = 1, offset = { x: 0, y: 0 } }) {
+    super({
+      position,
+      imageSrc,
+      scale,
+      frameMax,
+      offset,
+    });
     this.velocity = velocity;
     this.height = 150;
     this.width = 50;
@@ -60,21 +69,14 @@ class Fighter {
     this.color = color;
     this.isAttacking;
     this.health = 100;
-  }
-
-  draw() {
-    c.fillStyle = this.color;
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-    // attack box
-    if (this.isAttacking) {
-      c.fillStyle = "yellow";
-      c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
-    }
+    this.frameCurrent = 0;
+    this.frameElapsed = 0;
+    this.frameHold = 6;
   }
 
   update() {
     this.draw();
+    this.animateFrames();
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y;
 

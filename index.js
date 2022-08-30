@@ -43,6 +43,24 @@ const player = new Fighter({
   imageSrc: "./img/samurai/Idle.png",
   frameMax: 8,
   scale: 2.5,
+  sprites: {
+    idle: {
+      imageSrc: "./img/samurai/Idle.png",
+      frameMax: 8,
+    },
+    run: {
+      imageSrc: "./img/samurai/Run.png",
+      frameMax: 8,
+    },
+    jump: {
+      imageSrc: "./img/samurai/Jump.png",
+      frameMax: 2,
+    },
+    fall: {
+      imageSrc: "./img/samurai/Fall.png",
+      frameMax: 2,
+    },
+  },
 });
 
 const enemy = new Fighter({
@@ -62,6 +80,16 @@ const enemy = new Fighter({
   imageSrc: "./img/kenji/Idle.png",
   frameMax: 4,
   scale: 2.5,
+  sprites: {
+    idle: {
+      imageSrc: "./img/kenji/Idle.png",
+      frameMax: 4,
+    },
+    run: {
+      imageSrc: "./img/kenji/Run.png",
+      frameMax: 8,
+    },
+  },
 });
 
 console.log(player);
@@ -101,8 +129,18 @@ function animate() {
   // player movement
   if (keys.a.pressed && player.lastkey === "a") {
     player.velocity.x = -5;
+    player.switchSprite("run");
   } else if (keys.d.pressed && player.lastkey === "d") {
     player.velocity.x = 5;
+    player.switchSprite("run");
+  } else {
+    player.switchSprite("idle");
+  }
+  // jumping movement
+  if (player.velocity.y < 0) {
+    player.switchSprite("jump");
+  } else if (player.velocity.y > 0) {
+    player.switchSprite("fall");
   }
 
   // enemy movement

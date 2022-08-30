@@ -37,7 +37,7 @@ const player = new Fighter({
     y: 0,
   },
   offset: {
-    x: 210,
+    x: 205,
     y: 155,
   },
   imageSrc: "./img/samurai/Idle.png",
@@ -78,8 +78,8 @@ const enemy = new Fighter({
   },
   color: "blue",
   offset: {
-    x: -50,
-    y: 0,
+    x: -345,
+    y: 155,
   },
   imageSrc: "./img/kenji/Idle.png",
   frameMax: 4,
@@ -92,6 +92,18 @@ const enemy = new Fighter({
     run: {
       imageSrc: "./img/kenji/Run.png",
       frameMax: 8,
+    },
+    jump: {
+      imageSrc: "./img/kenji/Jump.png",
+      frameMax: 2,
+    },
+    fall: {
+      imageSrc: "./img/kenji/Fall.png",
+      frameMax: 2,
+    },
+    attack1: {
+      imageSrc: "./img/kenji/Attack1.png",
+      frameMax: 4,
     },
   },
 });
@@ -150,8 +162,18 @@ function animate() {
   // enemy movement
   if (keys.ArrowLeft.pressed && enemy.lastkey === "ArrowLeft") {
     enemy.velocity.x = -5;
+    enemy.switchSprite("run");
   } else if (keys.ArrowRight.pressed && enemy.lastkey === "ArrowRight") {
     enemy.velocity.x = 5;
+    enemy.switchSprite("run");
+  } else {
+    enemy.switchSprite("idle");
+  }
+  // jumping movement
+  if (enemy.velocity.y < 0) {
+    enemy.switchSprite("jump");
+  } else if (enemy.velocity.y > 0) {
+    enemy.switchSprite("fall");
   }
 
   // detect for collision

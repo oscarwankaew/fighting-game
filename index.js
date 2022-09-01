@@ -1,4 +1,5 @@
-/*global Sprite, Fighter, imageSrc, background, rectangularCollision, timerId, decreaseTimer, determineWinner*/
+/*global Sprite, Fighter, imageSrc, background, rectangularCollision, timerId, decreaseTimer, determineWinner, gsap*/
+
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
@@ -176,6 +177,8 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height);
   background.update();
   shop.update();
+  c.fillStyle = "rgba(255, 255, 255, 0.15)";
+  c.fillRect(0, 0, canvas.width, canvas.height);
   player.update();
   enemy.update();
 
@@ -228,7 +231,10 @@ function animate() {
     enemy.takeHit();
     player.isAttacking = false;
     // console.log("player attacking");
-    document.querySelector("#enemyHealth").style.width = enemy.health + "%";
+    // document.querySelector("#enemyHealth").style.width = enemy.health + "%";
+    gsap.to("#enemyHealth", {
+      width: enemy.health + "%",
+    });
   }
 
   // detact for misses
@@ -247,7 +253,10 @@ function animate() {
     player.takeHit();
     enemy.isAttacking = false;
     // console.log("enemy attacking");
-    document.querySelector("#playerHealth").style.width = player.health + "%";
+    // document.querySelector("#playerHealth").style.width = player.health + "%";
+    gsap.to("#playerHealth", {
+      width: player.health + "%",
+    });
   }
 
   // detact for misses

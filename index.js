@@ -68,6 +68,14 @@ const player = new Fighter({
       imageSrc: "./img/samurai/Attack1.png",
       frameMax: 6,
     },
+    takeHit: {
+      imageSrc: "./img/samurai/Take_Hit.png",
+      frameMax: 4,
+    },
+    death: {
+      imageSrc: "./img/samurai/Death.png",
+      frameMax: 6,
+    },
   },
   attackBox: {
     offset: {
@@ -120,6 +128,14 @@ const enemy = new Fighter({
     attack1: {
       imageSrc: "./img/kenji/Attack1.png",
       frameMax: 4,
+    },
+    takeHit: {
+      imageSrc: "./img/kenji/Take_Hit.png",
+      frameMax: 3,
+    },
+    death: {
+      imageSrc: "./img/kenji/Death.png",
+      frameMax: 7,
     },
   },
   attackBox: {
@@ -207,7 +223,7 @@ function animate() {
       rectangle2: enemy,
     }) &&
     player.isAttacking &&
-    player.framesCurrent === 4
+    player.frameCurrent === 4
   ) {
     player.isAttacking = false;
     console.log("player attacking");
@@ -216,7 +232,7 @@ function animate() {
   }
 
   // detact for misses
-  if (player.isAttacking && player.framesCurrent === 4) {
+  if (player.isAttacking && player.frameCurrent === 4) {
     player.isAttacking = false;
   }
 
@@ -226,7 +242,7 @@ function animate() {
       rectangle2: player,
     }) &&
     enemy.isAttacking &&
-    enemy.framesCurrent === 2
+    enemy.frameCurrent === 2
   ) {
     enemy.isAttacking = false;
     console.log("enemy attacking");
@@ -235,7 +251,7 @@ function animate() {
   }
 
   // detact for misses
-  if (enemy.isAttacking && enemy.framesCurrent === 2) {
+  if (enemy.isAttacking && enemy.frameCurrent === 2) {
     enemy.isAttacking = false;
   }
 

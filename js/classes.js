@@ -83,6 +83,7 @@ class Fighter extends Sprite {
     this.frameElapsed = 0;
     this.frameHold = 6;
     this.sprites = sprites;
+    this.dead = false;
 
     for (const sprite in this.sprites) {
       sprites[sprite].image = new Image();
@@ -94,7 +95,10 @@ class Fighter extends Sprite {
 
   update() {
     this.draw();
-    this.animateFrames();
+
+    if (!this.dead) {
+      this.animateFrames();
+    }
 
     // attack box
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
@@ -120,10 +124,34 @@ class Fighter extends Sprite {
     this.isAttacking = true;
   }
 
+  takeHit() {
+    this.health -= 10;
+
+    if (this.health <= 0) {
+      this.switchSprite("death");
+    } else {
+      this.switchSprite("takeHit");
+    }
+  }
+
   switchSprite(sprite) {
+    if (this.image === this.sprites.death.image) {
+      if (this.frameCurrent === this.sprites.death.frameMax - 1) {
+        this.dead = true;
+      }
+      return;
+    }
+
+    // overriding all other animations with the attack animation
     if (this.image === this.sprites.attack1.image && this.frameCurrent < this.sprites.attack1.frameMax - 1) {
       return;
     }
+
+    // override when fighter gets hit
+    if (this.image === this.sprites.takeHit.image && this.frameCurrent < this.sprites.takeHit.frameMax - 1) {
+      return;
+    }
+
     switch (sprite) {
       case "idle":
         if (this.image !== this.sprites.idle.image) {
@@ -157,6 +185,20 @@ class Fighter extends Sprite {
         if (this.image !== this.sprites.attack1.image) {
           this.image = this.sprites.attack1.image;
           this.frameMax = this.sprites.attack1.frameMax;
+          this.frameCurrent = 0;
+        }
+        break;
+      case "takeHit":
+        if (this.image !== this.sprites.takeHit.image) {
+          this.image = this.sprites.takeHit.image;
+          this.frameMax = this.sprites.takeHit.frameMax;
+          this.frameCurrent = 0;
+        }
+        break;
+      case "death":
+        if (this.image !== this.sprites.death.image) {
+          this.image = this.sprites.death.image;
+          this.frameMax = this.sprites.death.frameMax;
           this.frameCurrent = 0;
         }
         break;

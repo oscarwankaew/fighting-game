@@ -225,9 +225,9 @@ function animate() {
     player.isAttacking &&
     player.frameCurrent === 4
   ) {
+    enemy.takeHit();
     player.isAttacking = false;
-    console.log("player attacking");
-    enemy.health -= 10;
+    // console.log("player attacking");
     document.querySelector("#enemyHealth").style.width = enemy.health + "%";
   }
 
@@ -244,9 +244,9 @@ function animate() {
     enemy.isAttacking &&
     enemy.frameCurrent === 2
   ) {
+    player.takeHit();
     enemy.isAttacking = false;
-    console.log("enemy attacking");
-    player.health -= 10;
+    // console.log("enemy attacking");
     document.querySelector("#playerHealth").style.width = player.health + "%";
   }
 
@@ -265,36 +265,43 @@ animate();
 
 window.addEventListener("keydown", (event) => {
   // player keys
-  switch (event.key) {
-    case "d":
-      keys.d.pressed = true;
-      player.lastkey = "d";
-      break;
-    case "a":
-      keys.a.pressed = true;
-      player.lastkey = "a";
-      break;
-    case "w":
-      player.velocity.y = -20;
-      break;
-    case " ":
-      player.attack();
-      break;
-    // enemy keys
-    case "ArrowRight":
-      keys.ArrowRight.pressed = true;
-      enemy.lastkey = "ArrowRight";
-      break;
-    case "ArrowLeft":
-      keys.ArrowLeft.pressed = true;
-      enemy.lastkey = "ArrowLeft";
-      break;
-    case "ArrowUp":
-      enemy.velocity.y = -20;
-      break;
-    case "ArrowDown":
-      enemy.attack();
-      break;
+  if (!player.dead) {
+    switch (event.key) {
+      case "d":
+        keys.d.pressed = true;
+        player.lastkey = "d";
+        break;
+      case "a":
+        keys.a.pressed = true;
+        player.lastkey = "a";
+        break;
+      case "w":
+        player.velocity.y = -20;
+        break;
+      case " ":
+        player.attack();
+        break;
+    }
+  }
+
+  // enemy keys
+  if (!enemy.dead) {
+    switch (event.key) {
+      case "ArrowRight":
+        keys.ArrowRight.pressed = true;
+        enemy.lastkey = "ArrowRight";
+        break;
+      case "ArrowLeft":
+        keys.ArrowLeft.pressed = true;
+        enemy.lastkey = "ArrowLeft";
+        break;
+      case "ArrowUp":
+        enemy.velocity.y = -20;
+        break;
+      case "ArrowDown":
+        enemy.attack();
+        break;
+    }
   }
 });
 
